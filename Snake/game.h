@@ -4,6 +4,12 @@
 #include <chrono>
 #include <thread>
 
+enum MENU{
+    START_GAME,
+    RECORDS,
+    EXIT
+};
+
 enum CURRENT_STATE{
     IN_SCREEN,
     IN_MENU,
@@ -16,14 +22,22 @@ struct GAME
     int width;
     int height;
     int current_state;
+    int current_menu_option;
     std::thread* th;
 };
 void InitGame(GAME* game);
 
 void DeinitGame(GAME *game);
 void StartGame(GAME *game);
+void GameStarter (GAME *game);
+
+//для скрина
 void ScreenKeyer(GAME *game, int cur);
 void ScreenShower(GAME *game);
-void GameStarter (GAME *game);
 bool ScreenAction (GAME *game, std::chrono::milliseconds ms);
+
+//для меню
+void MenuKeyer(GAME *game, int cur);
+void MenuShower(GAME *game);
+bool MenuAction(GAME *game, std::chrono::milliseconds ms);
 #endif // GAME_H
