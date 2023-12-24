@@ -51,6 +51,9 @@ void StartGame(GAME *game)
         case CURRENT_STATE::IN_MENU:
             MenuKeyer(game, cur);
             break;
+        case CURRENT_STATE::IN_GAME:
+            GameKeyer(game, cur);
+            break;
         }
 
     }
@@ -81,6 +84,9 @@ void GameStarter (GAME *game)
         case CURRENT_STATE::IN_MENU:
             changes = MenuAction(game, std::chrono::duration_cast < std::chrono::milliseconds > (diff));
             break;
+        case CURRENT_STATE ::IN_GAME:
+            changes = GameAction(game, std::chrono::duration_cast < std::chrono::milliseconds > (diff));
+            break;
         }
 
     }
@@ -101,6 +107,10 @@ void MenuKeyer(GAME *game, int cur)
     {
     case 10: //enter
     {
+        if(game->current_menu_option == MENU::START_GAME)
+        {
+            game->current_state = CURRENT_STATE::IN_GAME;
+        }
         if(game->current_menu_option == MENU::EXIT)
         {
             game->current_state = CURRENT_STATE::IN_EXIT;
@@ -151,6 +161,32 @@ bool MenuAction(GAME *game, std::chrono::milliseconds ms)
     if(ms.count() > 30){
         clear();
         MenuShower(game);
+        refresh();
+        return true;
+    }
+    return false;
+}
+void GameKeyer(GAME *game, int cur)
+{
+    switch (cur) {
+    case 27: //esc
+        game->current_state = CURRENT_STATE::IN_MENU;
+        break;
+    }
+}
+void GameShower(GAME *game)
+{
+    printw("+----------+\n");
+    printw("|          |\n");
+    printw("|          |\n");
+    printw("|          |\n");
+    printw("+----------+\n");
+}
+bool GameAction(GAME *game, std::chrono::milliseconds ms)
+{
+    if(ms.count() > 30){
+        clear();
+        GameShower(game);
         refresh();
         return true;
     }

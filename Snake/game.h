@@ -40,4 +40,9 @@ bool ScreenAction (GAME *game, std::chrono::milliseconds ms);
 void MenuKeyer(GAME *game, int cur);
 void MenuShower(GAME *game);
 bool MenuAction(GAME *game, std::chrono::milliseconds ms);
+
+//для игры
+void GameKeyer(GAME *game, int cur);
+void GameShower(GAME *game);
+bool GameAction(GAME *game, std::chrono::milliseconds ms);
 #endif // GAME_H
