@@ -17,6 +17,13 @@ enum CURRENT_STATE{
     IN_EXIT
 };
 
+enum GAME_COLOR{
+    COLOR_SCREEN = 1,
+    COLOR_MENU,
+    COLOR_GAME,
+    COLOR_SNAKE
+};
+
 struct GAME
 {
     int width;
