@@ -28,8 +28,14 @@ enum GAME_COLOR{
     COLOR_GAME,
     COLOR_SNAKE,
     COLOR_APPLE,
+    COLOR_GAME_OVER,
 };
-
+//enum SNAKE_DIRECTION{
+//    LEFT,
+//    UP,
+//    RIGHT,
+//    DOWN
+//};
 
 
 struct GAME
@@ -38,18 +44,24 @@ struct GAME
     int height;
     int current_state;
     int current_menu_option;
-    int snake_step;
-    int snake_speed;
     int apple_place;
+    int current_result;
     std::thread* th;
     const int Field_X = 50;
     const int Field_Y = 25;
+    int snake_step;
+    int snake_speed;
 };
 
 struct SNAKE
 {
-    std::vector<char>Snake_Head;
+    std::vector<char>Snake_Head {10, 10};
     std::vector<char>Snake_Tail;
+};
+struct Point
+{
+    int x = -1;
+    int y = -1;
 };
 
 void InitGame(GAME* game);
@@ -72,9 +84,7 @@ bool MenuAction(GAME *game, std::chrono::milliseconds ms);
 void GameKeyer(GAME *game, int cur);
 void GameShower(GAME *game);
 bool GameAction(GAME *game, std::chrono::milliseconds ms);
-bool ApplePlace (GAME *game, int apple_placeX, int apple_placeY);
 
-void AppleShower(GAME *game);
 void SnakeMove(GAME *game, std::vector<char>Snake_Head, std::vector<char>Snake_Tail, int snake_step);
 void SnakeGrow();
 //****

@@ -15,6 +15,7 @@ void InitColor()
     init_pair(COLOR_GAME, COLOR_WHITE, COLOR_GREEN);
     init_pair(COLOR_CHOICE, COLOR_GREEN, COLOR_BLACK);
     init_pair(COLOR_APPLE, COLOR_RED, COLOR_GAME);
+    init_pair(COLOR_SNAKE, COLOR_CYAN, COLOR_MAGENTA);
 }
 void InitGame(GAME* game)
 {
@@ -32,8 +33,9 @@ void InitGame(GAME* game)
     game->current_state = CURRENT_STATE::IN_SCREEN;
     game->current_menu_option = MENU::START_GAME;
     game->th = new std::thread (GameStarter, game);
-
-    game->snake_speed = 1;
+    game->current_result = 0;
+    int snake_step = 1;
+    int snake_speed = 1;
     InitColor();
 }
 
@@ -245,6 +247,7 @@ void GameKeyer(GAME *game, int cur)
 }
 void GameShower(GAME *game)
 {
+    //игровое поле
     const int Field_X = 50;
     const int Field_Y = 25;
     int Field [Field_Y][Field_X] = {};
@@ -271,16 +274,8 @@ void GameShower(GAME *game)
     printw("|           |");
     move(4, 60);
     printw("+-----------+");
-    //for(int Snake_Head_Y = 0; Snake_Head_Y < 25; ++Snake_Head_Y){
-    //for(int Snake_Head_X = 0; Snake_Head_X < 50; ++Snake_Head_X){
-    //move(Field[Snake_Head_Y][Snake_Head_Y]);
-    //printw("#");
-    //int apple_place;
-    //Field[apple_place] = rand() % Field[25][50];
-    //move(Field[apple_place]);
-    //printw("@");
-    //      }
-    //  }
+
+    //Яблоко
     int Apple_Y;
     int Apple_X;
     srand(time(NULL));
@@ -290,36 +285,31 @@ void GameShower(GAME *game)
         {
         Apple_Y = rand() % Field_Y;
         Apple_X = rand() % Field_X;
-        }while(Field[Apple_Y][Apple_X] == 'x'); //&& Field[Apple_Y][Apple_X] == ' ');
+        }while(Field[Apple_Y][Apple_X] == 'x');
         Apple_Place = 1;
     }
     attron(A_BOLD | COLOR_PAIR(COLOR_APPLE));
     mvaddch(Apple_Y, Apple_X, '@');
     attroff(A_BOLD | COLOR_PAIR(COLOR_APPLE));
+    int Snake_Head_Y;
+    int Snake_Head_X;
+    Snake_Head_Y = rand () % game->Field_Y;
+    Snake_Head_X = rand() % game->Field_X;
+    attron(A_BOLD | COLOR_PAIR(COLOR_SNAKE));
+    mvaddch(Snake_Head_Y, Snake_Head_X, '$');
+    attroff(A_BOLD | COLOR_PAIR(COLOR_SNAKE));
+
+
 }
 
 
-void AppleShower(GAME *game)
-{
-char Apple = '@';
-for(int i = 0; i < 25; ++i){
-        for(int j = 0; j < 50; ++j){
-            double apple_placeY = rand() % i;
-            double apple_placeX = rand () % j;
-            move(apple_placeX, apple_placeY);
-            printw("%c",Apple);
-        }
-    }
-}
-//printw("%c", Snake_Tail);
 
-void SnakeMove(GAME *game, std::vector<char>Snake_Head, std::vector<char>Snake_Tail, int snake_step)
+void SnakeMove(GAME *game, std::vector<char>Snake_Head, std::vector<char>Snake_Tail, int snake_step, SNAKE *snake)
 {
-
     switch(snake_step)
     {
         case KEY_UP:
-        {
+        {//Snake_Head
 
             break;
         }
